@@ -21,12 +21,9 @@ public class Main {
 		
 		try {
 			
-			//Attempt to open and convert files to start and end states.
-			
-			//String init = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
-			//String goal = new Scanner(new File(args[1])).useDelimiter("\\Z").next();
-			String init = new Scanner(new File("start2.txt")).useDelimiter("\\Z").next();
-			String goal = new Scanner(new File("goal2.txt")).useDelimiter("\\Z").next();
+			//Attempt to open and convert files to start and end states.			
+			String init = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
+			String goal = new Scanner(new File(args[1])).useDelimiter("\\Z").next();
 			
 			String[] initVals = init.split(",|\n");
 			String[] goalVals = goal.split(",|\n");
@@ -48,8 +45,7 @@ public class Main {
 			
 			//Run the search with the given states and algorithm.
 			
-			//Search search = new Search(start, end, args[2]);
-			Search search = new Search(start, end, "iddfs");
+			Search search = new Search(start, end, args[2]);
 			if(!search.getSuccess()) {
 				System.out.println("no solution found");
 				return;
@@ -86,7 +82,7 @@ public class Main {
 	}
 	
 	public static void printHelp() {
-		System.out.println("Parameters: < initial state file > < goal state file > < mode > < output file >");
+		System.out.println("Parameters: <initial state file> <goal state file> <mode> <output file>");
 	}
 	
 }
