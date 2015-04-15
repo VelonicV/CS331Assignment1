@@ -25,8 +25,8 @@ public class Main {
 			
 			//String init = new Scanner(new File(args[0])).useDelimiter("\\Z").next();
 			//String goal = new Scanner(new File(args[1])).useDelimiter("\\Z").next();
-			String init = new Scanner(new File("start3.txt")).useDelimiter("\\Z").next();
-			String goal = new Scanner(new File("goal3.txt")).useDelimiter("\\Z").next();
+			String init = new Scanner(new File("start2.txt")).useDelimiter("\\Z").next();
+			String goal = new Scanner(new File("goal2.txt")).useDelimiter("\\Z").next();
 			
 			String[] initVals = init.split(",|\n");
 			String[] goalVals = goal.split(",|\n");
@@ -39,17 +39,17 @@ public class Main {
 			State start = new State(Integer.parseInt(initVals[3]), Integer.parseInt(initVals[4]),
 					Integer.parseInt(initVals[5]), Integer.parseInt(initVals[0]),
 					Integer.parseInt(initVals[1]), Integer.parseInt(initVals[2]),
-					null, 0);
+					null);
 			
 			State end = new State(Integer.parseInt(goalVals[3]), Integer.parseInt(goalVals[4]),
 					Integer.parseInt(goalVals[5]), Integer.parseInt(goalVals[0]),
 					Integer.parseInt(goalVals[1]), Integer.parseInt(goalVals[2]),
-					null, 0);
+					null);
 			
 			//Run the search with the given states and algorithm.
 			
 			//Search search = new Search(start, end, args[2]);
-			Search search = new Search(start, end, "astar");
+			Search search = new Search(start, end, "iddfs");
 			if(!search.getSuccess()) {
 				System.out.println("no solution found");
 				return;

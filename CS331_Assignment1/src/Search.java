@@ -24,7 +24,7 @@ public class Search {
 				bfs();
 				break;
 			case("dfs"):
-				dfs();
+				dfs(MAX_DEPTH);
 				break;
 			case("iddfs"):
 				iddfs();
@@ -50,79 +50,24 @@ public class Search {
 		return result;
 	}
 	
-	private void bfs() {
-		
-		Queue<State> fringe = new LinkedList<State>();
-		fringe.add(start);
-		
-		Hashtable<String, State> closed = new Hashtable<String, State>();
-		
-		for(;;) {
-			
-			if(fringe.isEmpty()) {
-				result = null;
-				return;
+	
+	private void iddfs() {
+		for(int i = 1; i < MAX_DEPTH; i++) {
+			if(!success) {
+				dfs(i);
 			}
-			
-			State temp = fringe.remove();
-			if(temp.equals(end)) {
-				result = temp;
-				success = true;
-				return;
+			else {
+				break;
 			}
-			
-			if(!closed.containsKey(temp.toString())) {				
-				closed.put(temp.toString(), temp);
-				expand++;
-				for(State s : temp.succ()) {
-					fringe.add(s);
-				}
-			}		
 		}
 	}
 	
-	private void dfs() {
+	private void dfs(int depth) {
 		
 		Stack<State> fringe = new Stack<State>();
 		fringe.push(start);
 		
-		Hashtable<String, State> closed = new Hashtable<String, State>();
-		
-		for(;;) {
-			
-			if(fringe.isEmpty()) {
-				result = null;
-				return;
-			}
-			
-			State temp = fringe.pop();
-			if(temp.equals(end)) {
-				result = temp;
-				success = true;
-				return;
-			}
-			
-			if(!closed.containsKey(temp.toString())) {				
-				closed.put(temp.toString(), temp);
-				expand++;
-				for(State s : temp.succ()) {
-					fringe.push(s);
-				}
-			}		
-		}
-		
-	}
-	
-	private void iddfs() {
-		
-	}
-	
-	private void astar() {
-		
-		PriorityQueue<State> fringe = new PriorityQueue<State>(10, new Heuristic(end));
-		fringe.add(start);
-		
-		Hashtable<String, State> closed = new Hashtable<String, State>();
+		HashMap<String, State> closed = new HashMap<String, State>();
 		
 		for(;;) {
 			
@@ -131,14 +76,71 @@ public class Search {
 				break;
 			}
 			
-			State temp = fringe.remove();
+			State temp = fringe.pop();
+			
+			//Clean up memory
+			Iterator<HashMap.Entry<String, State>> it = closed.entrySet().iterator();
+			while(it.hasNext()) {
+				HashMap.Entry<String, State> entry = it.next();
+				if(entry.getValue().depth > temp.depth) {
+					it.remove();
+				}
+			}
+			
+			System.out.flush();
+			if(temp.depth >= depth) {
+				continue;
+			}
 			
 			if(temp.equals(end)) {
 				result = temp;
 				success = true;
 				return;
 			}
-			 
+			
+			if(!closed.containsKey(temp.toString())) {				
+				closed.put(temp.toString(), temp);
+				expand++;
+				for(State s : temp.succ()) {
+					s.depth = temp.depth + 1;
+					fringe.push(s);
+				}
+			}		
+		}
+	}
+	
+	private void bfs() {
+		
+		Queue<State> fringe = new LinkedList<State>();
+		queueHelper(fringe);	
+	}
+	
+	private void astar() {
+		
+		PriorityQueue<State> fringe = new PriorityQueue<State>(10, new Heuristic(end));
+		queueHelper(fringe);
+	}
+	
+	private void queueHelper(Queue<State> fringe) {
+		
+		fringe.add(start);
+		
+		Hashtable<String, State> closed = new Hashtable<String, State>();
+		
+		for(;;) {
+			
+			if(fringe.isEmpty()) {
+				result = null;
+				return;
+			}
+			
+			State temp = fringe.remove();
+			if(temp.equals(end)) {
+				result = temp;
+				success = true;
+				return;
+			}
+			
 			if(!closed.containsKey(temp.toString())) {				
 				closed.put(temp.toString(), temp);
 				expand++;
@@ -147,7 +149,5 @@ public class Search {
 				}
 			}		
 		}
-		
-	}
-	
+	}	
 }
