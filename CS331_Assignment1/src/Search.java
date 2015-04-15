@@ -28,7 +28,9 @@ public class Search {
 				dfs();
 				break;
 			case("iddfs"):
-				iddfs();
+				for(int i = 0; i < MAX_DEPTH; i++) {
+					iddfs(i);
+				}
 				break;
 			case("astar"):
 				astar();
@@ -114,13 +116,75 @@ public class Search {
 		
 	}
 	
-	private void iddfs() {
-
+	private void iddfs(int limit) {
+		
+		Stack<State> fringe = new Stack<State>();
+		fringe.push(start);
+		
+		HashMap<String, State> closed = new HashMap<String, State>();
+		
+		for(;;) {
+			
+			if(fringe.isEmpty()) {
+				result = null;
+				break;
+			}
+			
+			State temp = fringe.pop();
+			
+			if(temp.depth() >= limit) {
+				continue;
+			}
+			
+			if(temp.equals(end)) {
+				result = temp;
+				success = true;
+				return;
+			}
+			
+			if(!closed.containsKey(temp.toString())) {				
+				closed.put(temp.toString(), temp);
+				expand++;
+				for(State s : temp.succ()) {
+					fringe.push(s);
+				}
+			}		
+		}
+		
+		closed.clear();
+		
 	}
 	
 	private void astar() {
 		
 		PriorityQueue<State> fringe = new PriorityQueue<State>(10, new Heuristic(end));
+		fringe.add(start);
+		
+		Hashtable<String, State> closed = new Hashtable<String, State>();
+		
+		for(;;) {
+			
+			if(fringe.isEmpty()) {
+				result = null;
+				break;
+			}
+			
+			State temp = fringe.remove();
+			
+			if(temp.equals(end)) {
+				result = temp;
+				success = true;
+				return;
+			}
+			
+			if(!closed.containsKey(temp.toString())) {				
+				closed.put(temp.toString(), temp);
+				expand++;
+				for(State s : temp.succ()) {
+					fringe.add(s);
+				}
+			}		
+		}
 		
 	}
 	

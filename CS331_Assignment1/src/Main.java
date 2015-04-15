@@ -21,10 +21,10 @@ public class Main {
 		//File output = new File(args[3]);
 		
 		try {
-			State start = new State(3, 3, 1, 0, 0, 0, null, 0);
-			State end = new State(0, 0, 0, 3, 3, 1, null, 0);
+			State start = new State(100, 90, 1, 0, 0, 0, null, 0);
+			State end = new State(0, 0, 0, 100, 90, 1, null, 0);
 			
-			Search search = new Search(start, end, "bfs");
+			Search search = new Search(start, end, "astar");
 			if(!search.getSuccess()) {
 				System.out.println("no solution found");
 				return;
