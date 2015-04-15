@@ -1,12 +1,11 @@
 import java.util.ArrayList;
 
-public class State {
+public class State implements Comparable<State>{
 	
-	public int rMiss, rCan, rBoat, lMiss, lCan, lBoat;
-	public int depth = 0;
+	public int rMiss, rCan, rBoat, lMiss, lCan, lBoat, depth;
 	public State parent;
 	
-	public State(int rMiss, int rCan, int rBoat, int lMiss, int lCan, int lBoat, State parent) {
+	public State(int rMiss, int rCan, int rBoat, int lMiss, int lCan, int lBoat, State parent, int depth) {
 		
 		this.rMiss = rMiss;
 		this.rCan = rCan;
@@ -15,6 +14,7 @@ public class State {
 		this.lCan = lCan;
 		this.lBoat = lBoat;
 		this.parent = parent;
+		this.depth = depth;
 	}
 	
 	//Return list of all possible successors.
@@ -25,36 +25,36 @@ public class State {
 		//Right-side boat
 		if(rBoat == 1) {			
 			//One missionary
-			potentialStates.add(new State(rMiss - 1, rCan, 0, lMiss + 1, lCan, 1, this));
+			potentialStates.add(new State(rMiss - 1, rCan, 0, lMiss + 1, lCan, 1, this, depth + 1));
 			
 			//Two missionaries
-			potentialStates.add(new State(rMiss - 2, rCan, 0, lMiss + 2, lCan, 1, this));
+			potentialStates.add(new State(rMiss - 2, rCan, 0, lMiss + 2, lCan, 1, this, depth + 1));
 		
 			//One Cannibal
-			potentialStates.add(new State(rMiss, rCan - 1, 0, lMiss, lCan + 1, 1, this));
+			potentialStates.add(new State(rMiss, rCan - 1, 0, lMiss, lCan + 1, 1, this, depth + 1));
 		
 			//Two Cannibals
-			potentialStates.add(new State(rMiss, rCan - 2, 0, lMiss, lCan + 2, 1, this));
+			potentialStates.add(new State(rMiss, rCan - 2, 0, lMiss, lCan + 2, 1, this, depth + 1));
 		
 			//One and One
-			potentialStates.add(new State(rMiss - 1, rCan - 1, 0, lMiss + 1, lCan + 1, 1, this));			
+			potentialStates.add(new State(rMiss - 1, rCan - 1, 0, lMiss + 1, lCan + 1, 1, this, depth + 1));			
 		}
 		//Left-side boat
 		else {	
 			//One missionary
-			potentialStates.add(new State(rMiss + 1, rCan, 1, lMiss - 1, lCan, 0, this));
+			potentialStates.add(new State(rMiss + 1, rCan, 1, lMiss - 1, lCan, 0, this, depth + 1));
 	
 			//Two missionaries
-			potentialStates.add(new State(rMiss + 2, rCan, 1, lMiss - 2, lCan, 0, this));
+			potentialStates.add(new State(rMiss + 2, rCan, 1, lMiss - 2, lCan, 0, this, depth + 1));
 			
 			//One Cannibal
-			potentialStates.add(new State(rMiss, rCan + 1, 1, lMiss, lCan - 1, 0, this));
+			potentialStates.add(new State(rMiss, rCan + 1, 1, lMiss, lCan - 1, 0, this, depth + 1));
 		
 			//Two Cannibals
-			potentialStates.add(new State(rMiss, rCan + 2, 1, lMiss, lCan - 2, 0, this));
+			potentialStates.add(new State(rMiss, rCan + 2, 1, lMiss, lCan - 2, 0, this, depth + 1));
 
 			//One and One
-			potentialStates.add(new State(rMiss + 1, rCan + 1, 1, lMiss - 1, lCan - 1, 0, this));
+			potentialStates.add(new State(rMiss + 1, rCan + 1, 1, lMiss - 1, lCan - 1, 0, this, depth + 1));
 		}
 		
 		//Check each state for validity before returning.
@@ -117,6 +117,18 @@ public class State {
 		}
 		
 		return true;
+	}
+	
+	public int compareTo(State state) {
+		if(this.depth > state.depth) {
+			return -1;
+		}
+		else if(this.depth < state.depth) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 }
 

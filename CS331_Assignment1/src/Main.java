@@ -39,12 +39,12 @@ public class Main {
 			State start = new State(Integer.parseInt(initVals[3]), Integer.parseInt(initVals[4]),
 					Integer.parseInt(initVals[5]), Integer.parseInt(initVals[0]),
 					Integer.parseInt(initVals[1]), Integer.parseInt(initVals[2]),
-					null);
+					null, 0);
 			
 			State end = new State(Integer.parseInt(goalVals[3]), Integer.parseInt(goalVals[4]),
 					Integer.parseInt(goalVals[5]), Integer.parseInt(goalVals[0]),
 					Integer.parseInt(goalVals[1]), Integer.parseInt(goalVals[2]),
-					null);
+					null, 0);
 			
 			//Run the search with the given states and algorithm.
 			

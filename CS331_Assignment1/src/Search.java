@@ -50,7 +50,6 @@ public class Search {
 		return result;
 	}
 	
-	
 	private void iddfs() {
 		for(int i = 1; i < MAX_DEPTH; i++) {
 			if(!success) {
@@ -78,16 +77,6 @@ public class Search {
 			
 			State temp = fringe.pop();
 			
-			//Clean up memory
-			Iterator<HashMap.Entry<String, State>> it = closed.entrySet().iterator();
-			while(it.hasNext()) {
-				HashMap.Entry<String, State> entry = it.next();
-				if(entry.getValue().depth > temp.depth) {
-					it.remove();
-				}
-			}
-			
-			System.out.flush();
 			if(temp.depth >= depth) {
 				continue;
 			}
@@ -98,11 +87,10 @@ public class Search {
 				return;
 			}
 			
-			if(!closed.containsKey(temp.toString())) {				
+			if((!closed.containsKey(temp.toString())) || closed.get(temp.toString()).depth > temp.depth) {				
 				closed.put(temp.toString(), temp);
 				expand++;
 				for(State s : temp.succ()) {
-					s.depth = temp.depth + 1;
 					fringe.push(s);
 				}
 			}		
