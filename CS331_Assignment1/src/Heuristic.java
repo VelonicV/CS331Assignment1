@@ -21,8 +21,6 @@ public class Heuristic implements Comparator<State> {
 				+ Math.abs(goal.lMiss - y.lMiss)
 				+ Math.abs(goal.lCan - y.lCan);
 		
-		return xDiff - yDiff;
-		
+		return xDiff - yDiff;	
 	}
-	
 }

@@ -57,6 +57,7 @@ public class State {
 			potentialStates.add(new State(rMiss + 1, rCan + 1, 1, lMiss - 1, lCan - 1, 0, this, depth + 1));
 		}
 		
+		//Check each state for validity before returning.
 		ArrayList<State> validStates = new ArrayList<State>();
 		for(State s : potentialStates) {
 			if(s.validState()) {

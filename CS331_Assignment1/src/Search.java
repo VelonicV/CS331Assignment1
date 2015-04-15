@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Search {
 	
-	private static final int MAX_DEPTH = 100;
+	private static final int MAX_DEPTH = Integer.MAX_VALUE;
 	
 	private State start;
 	private State end;
@@ -11,16 +11,15 @@ public class Search {
 	private boolean success = false;
 	
 	public Search(State start, State end, String searchType) throws Exception {
+		
 		this.start = start;
-		this.result = start;
 		this.end = end;
 		
 		if(!(start.validState() && end.validState())) {
 			throw new Exception("Invalid start/end states");
 		}
 		
-		switch(searchType) {
-			
+		switch(searchType) {		
 			case("bfs"):
 				bfs();
 				break;
@@ -28,9 +27,7 @@ public class Search {
 				dfs();
 				break;
 			case("iddfs"):
-				for(int i = 0; i < MAX_DEPTH; i++) {
-					iddfs(i);
-				}
+				iddfs();
 				break;
 			case("astar"):
 				astar();
@@ -116,42 +113,7 @@ public class Search {
 		
 	}
 	
-	private void iddfs(int limit) {
-		
-		Stack<State> fringe = new Stack<State>();
-		fringe.push(start);
-		
-		HashMap<String, State> closed = new HashMap<String, State>();
-		
-		for(;;) {
-			
-			if(fringe.isEmpty()) {
-				result = null;
-				break;
-			}
-			
-			State temp = fringe.pop();
-			
-			if(temp.depth() >= limit) {
-				continue;
-			}
-			
-			if(temp.equals(end)) {
-				result = temp;
-				success = true;
-				return;
-			}
-			
-			if(!closed.containsKey(temp.toString())) {				
-				closed.put(temp.toString(), temp);
-				expand++;
-				for(State s : temp.succ()) {
-					fringe.push(s);
-				}
-			}		
-		}
-		
-		closed.clear();
+	private void iddfs() {
 		
 	}
 	
@@ -176,7 +138,7 @@ public class Search {
 				success = true;
 				return;
 			}
-			
+			 
 			if(!closed.containsKey(temp.toString())) {				
 				closed.put(temp.toString(), temp);
 				expand++;
